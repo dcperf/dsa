@@ -34,5 +34,6 @@ fi
 dpacc --hostcc=gcc $SRCDIR/wod_dev.c \
     -o $BUILDDIR/device/libwod_dev.a \
     --devicecc-options="$OPT_FLAGS $DBG_FLAGS -I$COMMON_INCLUDE_DIR -I$FLEXIO_INCLUDE_DIR" \
+    --hostcc-options="-fPIC" \
     --device-libs="-L$FLEXIO_LIB_DIR" \
     --app-name=wod_app

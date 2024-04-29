@@ -12,3 +12,9 @@ wod_lib = static_library('wod', wod_sources,
     include_directories : include_directories(wod_inc),
     dependencies : [flexio_host_dep, mlx5_dep, wod_lib_dep],
     install : true)
+
+wod_lib = shared_library('wod', wod_sources,
+    native: true,
+    include_directories: include_directories(wod_inc),
+    dependencies : [wod_lib_dep, ibverbs_dep, mlx5_dep, flexio_host_dep],
+    install : true)
