@@ -17,13 +17,15 @@ From top folder.
 2. Build with specified flexio sdk
 ```
 $ export FLEXIO_HOME=$FLEXIO_DIR/flexio-sdk/install/opt/mellanox/flexio
-$ ./build.sh --clean --flexio_include_path $FLEXIO_HOME/include --flexio_lib_path $FLEXIO_HOME/lib
+$ export OMPI_HOME=$OPENMPI_DIR/ompi/install
+$ ./build.sh --clean --flexio_include_path $FLEXIO_HOME/include --flexio_lib_path $FLEXIO_HOME/lib --mpi $OMPI_HOME
 ```
 
 Available options:
 
 * `--flexio_include_path`:  Path to FlexIO headers.
 * `--flexio_lib_path`:      Path to FlexIO libraries.
+* `--mpi`:                  Path to MPI installation dir.
 * `--debug`:                Build in debug mode.
 * `--clean`:                Clean build folder.
 * `--install`:              Install after build.

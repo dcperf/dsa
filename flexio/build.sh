@@ -15,6 +15,7 @@ BUILDDIR='builddir'
 
 FLEXIO_INCLUDE_DIR='/opt/mellanox/flexio/include'
 FLEXIO_LIB_DIR='/opt/mellanox/flexio/lib'
+MPI='/usr/lib/x86_64-linux-gnu/openmpi'
 
 while [[ $# -gt 0 ]]; do
     key="$1"
@@ -36,6 +37,10 @@ while [[ $# -gt 0 ]]; do
         ;;
     --flexio_lib_path)
         FLEXIO_LIB_DIR="$1"
+        shift
+        ;;
+    --mpi)
+        MPI="$1"
         shift
         ;;
     --install)
@@ -65,7 +70,7 @@ if [ $CLEAN ]; then
 fi
 
 meson setup $BUILDDIR \
-    -Dflexio_include_path=$FLEXIO_INCLUDE_DIR -Dflexio_lib_path=$FLEXIO_LIB_DIR $MESONEXTARGS --prefix=$PREFIX
+    -Dflexio_include_path=$FLEXIO_INCLUDE_DIR -Dflexio_lib_path=$FLEXIO_LIB_DIR $MESONEXTARGS -Dmpi=$MPI --prefix=$PREFIX
 
 ninja -C $BUILDDIR $VERBOSE
 
