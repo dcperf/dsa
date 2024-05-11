@@ -18,6 +18,8 @@
 
 struct app_ctx {
     char proc_name[MPI_MAX_PROCESSOR_NAME];
+    uint32_t msg_size;
+    uint32_t iteration;
 
     struct ibv_context *ibv_ctx;
     struct ibv_pd *pd;

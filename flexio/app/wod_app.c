@@ -115,6 +115,24 @@ void destroy_app_ctx(struct app_ctx *app_ctx)
     return;
 }
 
+void cfg_run_info(struct app_ctx *app_ctx, int argc, char **argv)
+{
+    if (app_ctx == NULL) {
+        return;
+    }
+
+    app_ctx->msg_size = argc >= 2 ? atoi(argv[1]) : 512 * 1024 * 1024;
+    app_ctx->iteration = argc >= 3 ? atoi(argv[2]) : 10000;
+
+    if (app_ctx->msg_size == 0 || app_ctx->msg_size >= 1024 * 1024 * 1024) {
+        app_ctx->msg_size = 512 * 1024 * 1024;
+    }
+
+    if (app_ctx->iteration == 0 || app_ctx->iteration >= 100000) {
+        app_ctx->iteration = 100000;
+    }
+}
+
 int main(int argc, char **argv)
 {
     int ret = 0, rank_id, rank_cnt;
@@ -128,6 +146,7 @@ int main(int argc, char **argv)
     if (app_ctx == NULL) {
         ret = -1;
     }
+    cfg_run_info(app_ctx, argc, argv);
 
     create_mlx5_ctx(app_ctx, "mlx5_0");
 
