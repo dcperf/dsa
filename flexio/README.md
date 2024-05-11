@@ -36,5 +36,10 @@ Run
 -----------
 From top folder.
 ```
-./builddir/app/wod_app
+$ ./builddir/app/wod_app
+
+OR
+
+$ $MPI_HOME/bin/mpirun --tag-output -n 4 --host hgx-isr1-033:2,hgx-isr1-042:2 -x UCX_WARN_UNUSED_ENV_VARS=n -x LD_LIBRARY_PATH=$OMPI_HOME/lib:$FLEXIO_HOME/lib $PWD/builddir/app/wod_app
+
 ```
