@@ -14,8 +14,15 @@
 #include <unistd.h>
 #include <mpi.h>
 
+#include <infiniband/verbs.h>
+
 struct app_ctx {
     char proc_name[MPI_MAX_PROCESSOR_NAME];
+
+    struct ibv_context *ibv_ctx;
+    struct ibv_pd *pd;
+
+    pthread_t async_thread;
 };
 
 #endif /* __APP_COMMON_H__ */
