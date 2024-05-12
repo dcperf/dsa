@@ -19,6 +19,12 @@ int32_t create_app_ctx(struct app_ctx **app_ctx_p, uint32_t rank_id, uint32_t ra
         return -1;
     }
 
+    if (rank_cnt >= 8) {
+        *app_ctx_p = NULL;
+        free(app_ctx);
+        return -1;
+    }
+
     int proc_name_len;
     char proc_name[MPI_MAX_PROCESSOR_NAME];
     MPI_Get_processor_name(proc_name, &proc_name_len);
