@@ -16,7 +16,7 @@
 #include <common.h>
 #include <mlx5.h>
 
-struct data_cq {
+struct dpa_generic_cq {
     struct flexio_cq    *f_cq;
     struct flexio_event_handler *event_handler;
 };
@@ -27,9 +27,9 @@ struct dpa_host_ctx {
     struct flexio_process *process;
     struct flexio_msg_stream *msg_stream;
 
-    struct data_cq data_cq[8];
+    struct dpa_generic_cq data_cq[8];
 
-    struct flexio_qp *f_qps[];
+    struct flexio_qp *data_qp[8];
 };
 
 #endif /* __HOST_CONTEXT__ */
