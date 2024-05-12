@@ -76,7 +76,48 @@ int dpa_dev_cq_create(struct dpa_host_ctx *dpa_host_ctx,
 int32_t dpa_dev_qp_context(struct dpa_host_ctx *dpa_host_ctx, int qp_usage,
     int32_t log_sq_depth, flexio_uintptr_t sq_buf_addr, struct flexio_cq *f_cq, struct flexio_qp **f_qp)
 {
-    return 0;
+    int32_t ret;
+    int qp_access_mask, ops_flag;
+    struct flexio_qp_attr qp_attr = {};
+    struct flexio_qp_attr_opt_param_mask qp_attr_param_mask = {};
+
+    if (qp_usage == 1) {
+        qp_access_mask = IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_READ;
+        ops_flag = FLEXIO_QP_WR_RDMA_WRITE | FLEXIO_QP_WR_RDMA_READ;
+    } else {
+        qp_access_mask = IBV_ACCESS_LOCAL_WRITE;
+        ops_flag = FLEXIO_QP_WR_RDMA_WRITE | FLEXIO_QP_WR_RDMA_READ | FLEXIO_QP_WR_ATOMIC_CMP_AND_SWAP;
+    }
+
+    qp_attr.transport_type = FLEXIO_QPC_ST_RC;
+    qp_attr.log_sq_depth = log_sq_depth;
+
+    qp_attr.qp_wq_buff_qmem.memtype = FLEXIO_MEMTYPE_DPA;
+    qp_attr.qp_wq_buff_qmem.daddr = sq_buf_addr;
+
+    qp_attr.uar_id = flexio_uar_get_id(flexio_process_get_uar(dpa_host_ctx->process));
+    qp_attr.sq_cqn = flexio_cq_get_cq_num(f_cq);
+    qp_attr.pd = dpa_host_ctx->mlx5_ctx->pd;
+    qp_attr.rq_type = FLEXIO_QP_QPC_RQ_TYPE_ZERO_SIZE_RQ;
+
+    qp_attr.qp_access_mask = qp_access_mask;
+    qp_attr.ops_flag = ops_flag;
+
+    ret = flexio_qp_create(dpa_host_ctx->process, NULL, &qp_attr, f_qp);
+    if (ret != 0) {
+        fprintf(stderr, "failed to create qp with qp_usage: %d\n", qp_usage);
+        return -1;
+    }
+
+    /* RST2INIT */
+    qp_attr.vhca_port_num = 0x1;
+    qp_attr.next_state = FLEXIO_QP_STATE_INIT;
+    ret = flexio_qp_modify(*f_qp, &qp_attr, &qp_attr_param_mask);
+    if (ret != 0) {
+        fprintf(stderr, "failed to modify qp from RST to INIT\n");
+    }
+
+    return ret;
 }
 
 int32_t create_dpa_host_ctx(struct mlx5_ctx* mlx5_ctx, struct dpa_host_ctx **p_dpa_host_ctx)
