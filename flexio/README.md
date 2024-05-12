@@ -36,7 +36,7 @@ Run
 -----------
 From top folder.
 ```
-$ ./builddir/app/wod_app
+$ LD_LIBRARY_PATH=$OMPI_HOME/lib:$FLEXIO_HOME/lib ./builddir/app/wod_app
 
 OR
 
