@@ -9,6 +9,7 @@
 #include "context.h"
 
 extern struct flexio_app *wod_app;
+extern flexio_func_t dpa_dev_error_handler;
 
 int32_t create_dpa_host_ctx(struct mlx5_ctx* mlx5_ctx, struct dpa_host_ctx **p_dpa_host_ctx)
 {
@@ -21,6 +22,12 @@ int32_t create_dpa_host_ctx(struct mlx5_ctx* mlx5_ctx, struct dpa_host_ctx **p_d
     int32_t ret = flexio_process_create(dpa_host_ctx->mlx5_ctx->ibv_ctx, wod_app, &process_attr, &dpa_host_ctx->process);
     if (ret != 0) {
         fprintf(stderr, "failed to create dpa process\n");
+        return -1;
+    }
+
+    ret = flexio_process_error_handler_set(dpa_host_ctx->process, dpa_dev_error_handler);
+    if (ret != 0) {
+        fprintf(stderr, "failed to create dpa process error handler\n");
         return -1;
     }
 
