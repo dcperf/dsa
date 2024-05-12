@@ -2,7 +2,7 @@
 # Copyright(c) 2024 Liu, Changcheng <changcheng.liu@aliyun.com>
 
 wod_app_dep = declare_dependency(
-    include_directories: ['../include', flexio_lib_dir],
+    include_directories: ['../include', flexio_include_dir],
     link_with: [wod_lib])
 
 mpi_loc = get_option('mpi')
