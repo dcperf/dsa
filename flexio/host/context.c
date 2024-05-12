@@ -73,6 +73,12 @@ int dpa_dev_cq_create(struct dpa_host_ctx *dpa_host_ctx,
     return 0;
 }
 
+int32_t dpa_dev_qp_context(struct dpa_host_ctx *dpa_host_ctx, int qp_usage,
+    int32_t log_sq_depth, flexio_uintptr_t sq_buf_addr, struct flexio_cq *f_cq, struct flexio_qp **f_qp)
+{
+    return 0;
+}
+
 int32_t create_dpa_host_ctx(struct mlx5_ctx* mlx5_ctx, struct dpa_host_ctx **p_dpa_host_ctx)
 {
     struct dpa_host_ctx *dpa_host_ctx = calloc(1, sizeof(struct dpa_host_ctx));
@@ -112,6 +118,12 @@ int32_t create_dpa_host_ctx(struct mlx5_ctx* mlx5_ctx, struct dpa_host_ctx **p_d
                 dpa_host_ctx->worker_ctx + i * sizeof(struct worker_ctx) + offsetof(struct worker_ctx, data_cq_buf), &dpa_host_ctx->data_cq[i]);
     }
 
+    for (uint32_t i = 0; i < 8; i++) {
+        ret = dpa_dev_qp_context(dpa_host_ctx, 1, 2,
+                dpa_host_ctx->worker_ctx + i * sizeof(struct worker_ctx) + offsetof(struct worker_ctx, data_sq_buf),
+                dpa_host_ctx->data_cq[i].f_cq, &dpa_host_ctx->data_qp[i]);
+    }
+
     *p_dpa_host_ctx = dpa_host_ctx;
     return 0;
 
@@ -128,6 +140,13 @@ err_process:
 int32_t destroy_dpa_host_ctx(struct dpa_host_ctx *dpa_host_ctx)
 {
     int32_t ret;
+
+    for(uint32_t i = 0; i < 8; i++) {
+        ret = flexio_qp_destroy(dpa_host_ctx->data_qp[i]);
+        if (ret != 0) {
+            fprintf(stderr, "failed to destroy data_qp[%d]\n", i);
+        }
+    }
 
     for (uint32_t i = 0; i < 8; i++) {
         struct dpa_generic_cq *data_cq = &dpa_host_ctx->data_cq[i];
