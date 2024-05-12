@@ -5,7 +5,7 @@
  * Copyright(c) 2020 Liu, Changcheng <changcheng.liu@aliyun.com>
  */
 
-#include <libflexio-dev/flexio_dev.h>
+#include "dev_ver.h"
 #include <libflexio-dev/flexio_dev_err.h>
 
 __dpa_global__ void dpa_dev_error_handler(uint64_t arg1, uint64_t arg2)
