@@ -13,6 +13,9 @@
 #include <infiniband/mlx5dv.h>
 #include <libflexio/flexio.h>
 
+#include <common.h>
+#include <mlx5.h>
+
 struct data_cq {
     struct flexio_cq    *f_cq;
     struct flexio_event_handler *event_handler;
