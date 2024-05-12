@@ -6,5 +6,11 @@
  */
 
 #include <stdio.h>
+#include "context.h"
 
 extern struct flexio_app *wod_app;
+
+int32_t create_dpa_host_ctx(struct mlx5_ctx* mlx5_ctx, struct dpa_host_ctx **p_dpa_host_ctx)
+{
+    return 0;
+}

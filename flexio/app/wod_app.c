@@ -5,6 +5,7 @@
  * Copyright(c) 2024 Liu, Changcheng <changcheng.liu@aliyun.com>
  */
 
+#include <common.h>
 #include <mlx5.h>
 
 #include "app.h"
@@ -72,6 +73,8 @@ int main(int argc, char **argv)
         ret = -1;
     }
     cfg_run_info(app_ctx, argc, argv);
+
+    create_dpa_host_ctx(&app_ctx->mlx5_ctx, &app_ctx->dpa_host_ctx);
 
     destroy_app_ctx(app_ctx);
     app_ctx = NULL;

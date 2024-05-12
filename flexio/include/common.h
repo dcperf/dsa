@@ -21,6 +21,10 @@
 extern "C" {
 #endif
 
+struct dpa_host_ctx;
+struct mlx5_ctx;
+
+extern int32_t create_dpa_host_ctx(struct mlx5_ctx* mlx5_ctx, struct dpa_host_ctx **p_dpa_host_ctx);
 
 #ifdef __cplusplus
 } // extern "C"

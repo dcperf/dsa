@@ -16,6 +16,8 @@
 
 #include <infiniband/verbs.h>
 
+struct dpa_host_ctx;
+
 struct app_ctx {
     char proc_name[MPI_MAX_PROCESSOR_NAME];
     uint32_t rank_id, rank_cnt;
@@ -23,6 +25,8 @@ struct app_ctx {
     uint32_t iteration;
 
     struct mlx5_ctx mlx5_ctx;
+
+    struct dpa_host_ctx *dpa_host_ctx;
 };
 
 #endif /* __APP_COMMON_H__ */
