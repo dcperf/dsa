@@ -35,3 +35,16 @@ int32_t create_dpa_host_ctx(struct mlx5_ctx* mlx5_ctx, struct dpa_host_ctx **p_d
 
     return 0;
 }
+
+int32_t destroy_dpa_host_ctx(struct dpa_host_ctx *dpa_host_ctx)
+{
+    int32_t ret = flexio_process_destroy(dpa_host_ctx->process);
+    if (ret != 0) {
+        fprintf(stderr, "failed to destroy dpa process\n");
+        return -1;
+    }
+
+    free(dpa_host_ctx);
+
+    return 0;
+}

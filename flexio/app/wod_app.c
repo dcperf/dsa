@@ -82,6 +82,7 @@ int main(int argc, char **argv)
 
     create_dpa_host_ctx(&app_ctx->mlx5_ctx, &app_ctx->dpa_host_ctx);
 
+    destroy_dpa_host_ctx(app_ctx->dpa_host_ctx);
     destroy_app_ctx(app_ctx);
     app_ctx = NULL;
 
