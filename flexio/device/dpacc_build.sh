@@ -28,7 +28,7 @@ DBG_FLAGS=''
 if [ "$DEBUGOPT" == "DEBUG_OFF" ]; then
     OPT_FLAGS+='-O3 -flto'
 else
-    DBG_FLAGS+='-DDEBUG'
+    DBG_FLAGS+='-DDEBUG -g -O0'
 fi
 
 dpacc --hostcc=gcc $SRCDIR/wod_dev.c $SRCDIR/dev_context.c \

@@ -13,7 +13,7 @@ flexio_host_dep = declare_dependency(
 ibverbs_dep = dependency('libibverbs')
 mlx5_dep = dependency('libmlx5')
 
-compilation_opts = get_option('enable_debug') ? '-DDEBUG -g' : '-O3'
+compilation_opts = get_option('enable_debug') ? '-DDEBUG -g -O0' : '-O3'
 add_global_arguments(compilation_opts, language : 'c')
 
 subdir('include')
